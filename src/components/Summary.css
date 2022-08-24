@@ -1,0 +1,22 @@
+.summary {
+    display: flex;
+    flex-direction: column;
+    line-height: 1rem;   
+}
+
+h4 {
+    font-weight: bold;
+    margin-top: 8px
+}
+
+.temperature,
+.humidity,
+.rain,
+.wind {
+    display: flex;
+    gap: 12px;
+}
+
+img {
+    margin-top: 16px;
+}

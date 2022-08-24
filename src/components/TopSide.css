@@ -1,0 +1,12 @@
+body {
+    color: white;
+    width: 1vw;
+}
+
+.topside {
+    display: flex;
+    justify-content: space-between;
+    padding: 64px;
+    padding-right: 128px;
+    overflow: hidden;
+}
