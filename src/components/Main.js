@@ -4,9 +4,10 @@ import TopSide from "./TopSide"
 import BottomSide from "./BottomSide"
 
 export default function Main() {
+    
     return (
         <div className="main">
-            <TopSide/>
+            <TopSide />
             <BottomSide />
         </div>
     )

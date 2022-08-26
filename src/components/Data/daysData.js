@@ -4,7 +4,8 @@ import { useState, useEffect } from "react"
 export default function DaysData() {
     const [currentCity, setCurrentCity] = useState("montevideo")
     const [daysInfo, setDaysInfo] = useState([])
-    const [currentDayInfo, setCurrentDayInfo] = useState([]) 
+    const [currentDayInfo, setCurrentDayInfo] = useState({})
+
 
     useEffect(() => {
         async function getCoordinates(city) {
@@ -32,92 +33,40 @@ export default function DaysData() {
                 console.log("Couldn't find your city")
             }
         }
-
         async function returnData() {
             let coordinates = await getCoordinates(currentCity)
             let weatherInfo = await getWeatherData(coordinates)
-            console.log(weatherInfo)
-            weatherInfo.daily.map((day, index) => {
-                setDaysInfo(prevInfo => {
-                    return [
-                        ...prevInfo,
-                        {
-                            key: index,
-                            id: index,
-                            day: new Date(day.dt*1000).toLocaleDateString("en-US", { weekday: "long"}),
-                            average_temp: Math.floor((day.temp.min + day.temp.max) / 2),
-                            min_temp: Math.floor(day.temp.min),
-                            max_temp: Math.floor(day.temp.max),
-                            cloudiness: day.clouds
-                        }]
-                })
-            })
 
+            const mappedInfo = weatherInfo.daily.map((day, index) => {
+                return {
+                    key: index,
+                    id: index,
+                    day: new Date(day.dt * 1000).toLocaleDateString("en-US", { weekday: "long" }),
+                    average_temp: Math.floor((day.temp.min + day.temp.max) / 2),
+                    min_temp: Math.floor(day.temp.min),
+                    max_temp: Math.floor(day.temp.max),
+                    cloudiness: day.clouds
+                }
+            })
+            setDaysInfo(mappedInfo)
+            setCurrentDayInfo({
+                id: weatherInfo.timezone,
+                city: weatherInfo.timezone,
+                currentWeather: weatherInfo.current.weather[0].main,
+                day: new Date(weatherInfo.current.dt * 1000).toLocaleDateString("en-US", { weekday: "long" }),
+                date: new Date(weatherInfo.current.dt * 1000).toLocaleDateString("en-US",
+                    { year: "numeric", month: "long", day: "numeric" }),
+                hour: new Date(weatherInfo.current.dt * 1000).toLocaleTimeString("en-US",
+                    { hour12: false, hour: "2-digit", minute: "2-digit" }),
+                temp: Math.floor(weatherInfo.current.feels_like),
+                cloudiness: weatherInfo.current.clouds,
+                humidity: weatherInfo.current.humidity,
+                uvi: weatherInfo.current.uvi,
+                wind: weatherInfo.current.wind_speed
+            })
         }
         returnData()
     }, [currentCity])
 
-    return daysInfo
+    return [daysInfo, currentDayInfo]
 }
-
-
-const daysInfo = [
-    {
-        id: 0,
-        day: "Monday",
-        averageTemp: "20 °C",
-        minTemp: "13 °C",
-        highTemp: "22 °C",
-        status: "sunny"
-    },
-    {
-        id: 1,
-        day: "Tuesday",
-        averageTemp: "20 °C",
-        minTemp: "13 °C",
-        highTemp: "22 °C",
-        status: "sunny"
-    },
-    {
-        id: 2,
-        day: "Wednesday",
-        averageTemp: "20 °C",
-        minTemp: "13 °C",
-        highTemp: "22 °C",
-        status: "sunny"
-    },
-    {
-        id: 3,
-        day: "Thursday",
-        averageTemp: "20 °C",
-        minTemp: "13 °C",
-        highTemp: "22 °C",
-        status: "sunny"
-    },
-    {
-        id: 4,
-        day: "Friday",
-        averageTemp: "20 °C",
-        minTemp: "13 °C",
-        highTemp: "22 °C",
-        status: "sunny"
-    },
-    {
-        id: 5,
-        day: "Saturday",
-        averageTemp: "20 °C",
-        minTemp: "13 °C",
-        highTemp: "22 °C",
-        status: "sunny"
-    },
-    {
-        id: 6,
-        day: "Sunday",
-        averageTemp: "20 °C",
-        minTemp: "13 °C",
-        highTemp: "22 °C",
-        status: "sunny"
-    },
-]
-
-export { daysInfo } 
