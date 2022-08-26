@@ -1,13 +1,13 @@
 import React from "react"
 import Days from "./Days"
 import "./BottomSide.css"
-import daysInfo from "./Data/daysData"
+
 
 export default function BottomSide(props) {
-
+    const { daysInfo } = props
     return (
         <div>
-            <Days />
+            <Days dayInfo={daysInfo} />
         </div>
     )
 }
